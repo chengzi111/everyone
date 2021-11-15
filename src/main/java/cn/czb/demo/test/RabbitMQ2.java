@@ -1,5 +1,6 @@
 package cn.czb.demo.test;
 
+import cn.czb.demo.util.RabbitMQUtil;
 import com.rabbitmq.client.*;
 
 import java.io.IOException;
@@ -7,22 +8,9 @@ import java.io.IOException;
 public class RabbitMQ2 {
     public static void main(String[] args) throws Exception {
 
-        ConnectionFactory factory = new ConnectionFactory();
 
-        //设置rabbitmq服务器IP地址
-        factory.setHost("192.168.239.133");
-        //设置rabbitmq服务器连接端口
-        factory.setPort(5672);
-        //设置rabbitmq服务器虚拟主机
-        factory.setVirtualHost("czb");
-        //设置rabbitmq服务器用户名
-        factory.setUsername("czb");
-        //设置rabbitmq服务器密码
-        factory.setPassword("czb");
-        //如果解析ip地址超时  设置一个ip解析过程中的时间
-        factory.setHandshakeTimeout(50000);
         //获取连接
-        Connection connection = factory.newConnection();
+        Connection connection = RabbitMQUtil.getConnection();
         //获取通道
         Channel channel = connection.createChannel();
         /**设置队列参数
@@ -32,7 +20,7 @@ public class RabbitMQ2 {
          * @param autoDelete 是否自动删除（没有连接自动删除） true:自动删除   false:不自动删除
          * @param arguments 队列的其他属性(构造参数)
          */
-        channel.queueDeclare("javaQueues",false,false,true,null);
+        channel.queueDeclare("hello",true,false,true,null);
 
         /**消费者消费消息
          * @param queue 队列名称
